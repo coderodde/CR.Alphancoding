@@ -2,7 +2,7 @@ package net.coderodde;
 
 import java.util.Arrays;
 
-public final class DigitDecoderV3 {
+public final class DigitDecoder {
     
     private static final int NOT_USED = -1;
     
@@ -149,7 +149,7 @@ public final class DigitDecoderV3 {
         
         if (test) {
             String s = "11#(2100)2(3)123(11)";
-            int[] array = DigitDecoderV3.compute(s);
+            int[] array = DigitDecoder.compute(s);
             System.out.println(Arrays.toString(array));
         }
     }
