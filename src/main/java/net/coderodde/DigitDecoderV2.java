@@ -135,9 +135,10 @@ public final class DigitDecoderV2 {
     }
     
     private void discharge1() {
-        checkIsDigit(buffer.getCharacter(0));
-        int index = getSingleDigitFirstIndex();
-        decodedInts[index]++;
+        if (isLegalDigitCharacter(buffer.getCharacter(0))) {
+            int index = getSingleDigitFirstIndex();
+            decodedInts[index]++;
+        }
     }
     
     private void discharge4() {
@@ -193,9 +194,9 @@ public final class DigitDecoderV2 {
             
             if (buffer.getCharacter(3) == COUNT_VALUE_BEGIN_CHARACTER) {
                 currentIndex += 3;
-                int count = readCount(currentIndex - 2);
+                int count = readCount(currentIndex);
                 decodedInts[index] += count;
-                buffer.clear();
+                currentIndex++;
             } else {
                 currentIndex++;
                 decodedInts[index]++;
@@ -342,7 +343,7 @@ public final class DigitDecoderV2 {
         boolean test = true;
         
         if (test) {
-            String code = "10#20#";
+            String code = "24#(5)1";
             int[] array = decode(code);
             System.out.println(Arrays.toString(array));
             System.out.println(frequency(code));
