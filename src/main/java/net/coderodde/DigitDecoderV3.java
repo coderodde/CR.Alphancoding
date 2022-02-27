@@ -68,6 +68,8 @@ public final class DigitDecoderV3 {
                     lastCharIsHash = true;
                 }
                 case '(' -> {
+                    lastCharIsHash = false;
+                    
                     if (currentIndex == 0) {
                         throw new IllegalArgumentException(
                                 "'(' cannot be the first characters.");
@@ -146,7 +148,7 @@ public final class DigitDecoderV3 {
         boolean test = true;
         
         if (test) {
-            String s = "24#5";
+            String s = "11#(2100)2(3)123(11)";
             int[] array = DigitDecoderV3.compute(s);
             System.out.println(Arrays.toString(array));
         }
