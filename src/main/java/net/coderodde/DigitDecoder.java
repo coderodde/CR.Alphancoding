@@ -1,6 +1,7 @@
 package net.coderodde;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public final class DigitDecoder {
     
@@ -68,7 +69,15 @@ public final class DigitDecoder {
                     lastCharIsHash = true;
                 }
                 case '(' -> {
-                    lastCharIsHash = false;
+                    if (lastCharIsHash) {
+                        lastCharIsHash = false;
+                        outputArrayIndex = (char1 - '0') * 10 +
+                                           (char2 - '0') - 1;
+                    } else {
+                        outputArray[char1 - '0' - 1]++;
+                        char1 = char2;
+                        char2 = 0;
+                    }
                     
                     if (currentIndex == 0) {
                         throw new IllegalArgumentException(
@@ -77,6 +86,10 @@ public final class DigitDecoder {
                     
                     if (currentIndex > chars.length - 3) {
                         throw new IllegalArgumentException("No closing ')'.");
+                    }
+                    
+                    if (!lastCharIsHash) {
+                        outputArrayIndex = (char2 - '0' - 1);
                     }
                     
                     readingCount = true;
@@ -145,12 +158,42 @@ public final class DigitDecoder {
     }
     
     public static void main(String[] args) {
-        boolean test = true;
+        String c = "20#(7)12(10)45(3)6";
+        int[] val = DigitDecoder.compute(c);
+        System.out.println(Arrays.toString(val));
+        System.exit(0);
         
-        if (test) {
-            String s = "11#(2100)2(3)123(11)";
-            int[] array = DigitDecoder.compute(s);
-            System.out.println(Arrays.toString(array));
+        Scanner scanner = new Scanner(System.in);
+        
+        while (true) {
+            String code = scanner.nextLine();
+            
+            if (code.trim().equals("q")) {
+                System.out.println("Bye!");
+                return;
+            }
+            
+            try {
+                int[] decodedInts1 = compute(code);
+                System.out.println("cr: " + Arrays.toString(decodedInts1));
+            } catch (Throwable t) {
+                System.err.println(
+                        "coderodde's implementation failed: " 
+                                + t.getMessage() 
+                                + ", caused by: " 
+                                + t.getCause());
+            }
+            
+            try {
+                int[] decodedInts2 = OPDigitDecoder.frequency(code);
+                System.out.println("OP: " + Arrays.toString(decodedInts2));
+            } catch (Throwable t) {
+                System.err.println(
+                        "OP's implementation failed: " 
+                                + t.getMessage() 
+                                + ", caused by: " 
+                                + t.getCause());
+            }
         }
     }
 }

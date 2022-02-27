@@ -2,32 +2,35 @@ package net.coderodde;
 
 import java.util.Arrays;
 import java.util.Random;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DigitDecoderTest {
     
     private static final int TEST_ITERATIONS = 100;
-    private static final int MAXIMUM_CHARS = 20;
-    private static final int MAXIMUM_COUNT = 99999;
+    private static final int MAXIMUM_CHARS = 4;
+    private static final int MAXIMUM_COUNT = 9;
     
     private final Random random = new Random(1L);
     
     @Test
-    public void testAll() {
-        for (int iteration = 0; iteration < TEST_ITERATIONS; ++iteration) {
-            testSingle();
-        }
+    public void shit() {
+        String s = "20#(7)12(10)";
+        DigitDecoder.compute(s);
     }
+    
+//    public void testAll33() {
+//        for (int iteration = 0; iteration < TEST_ITERATIONS; ++iteration) {
+//            testSingle();
+//        }
+//    }
     
     private void testSingle() {
         String code = generateRandomCode();
+        System.out.println(code);
         int[] decodedActual = DigitDecoder.compute(code);
         int[] decodedExpected = OPDigitDecoder.frequency(code);
+        
         assertTrue(Arrays.equals(decodedActual, decodedExpected));
     }
     
@@ -44,9 +47,15 @@ public class DigitDecoderTest {
     
     private String getNumber()  {
         boolean addCount = random.nextDouble() < 0.33;
+        int number = 1 + random.nextInt(26);
+        
         StringBuilder stringBuilder = new StringBuilder();
-        char digit = (char)((int) '1' + random.nextInt(9));
-        stringBuilder.append(digit);
+        String numberString = Integer.toString(number);
+        stringBuilder.append(numberString);
+        
+        if (number >= 10) {
+            stringBuilder.append("#");
+        }
         
         if (addCount) {
             stringBuilder.append(getCountString());
