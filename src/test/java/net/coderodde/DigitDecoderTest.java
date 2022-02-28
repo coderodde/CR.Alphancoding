@@ -13,17 +13,17 @@ public class DigitDecoderTest {
     
     private final Random random = new Random(1L);
     
-    @Test
-    public void shit() {
-        String s = "20#(7)12(10)";
-        DigitDecoder.compute(s);
-    }
-    
-//    public void testAll33() {
-//        for (int iteration = 0; iteration < TEST_ITERATIONS; ++iteration) {
-//            testSingle();
-//        }
+//    @Test
+//    public void shit() {
+//        String s = "20#(7)12(10)";
+//        DigitDecoder.compute(s);
 //    }
+    
+    public void testAll() {
+        for (int iteration = 0; iteration < TEST_ITERATIONS; ++iteration) {
+            testSingle();
+        }
+    }
     
     private void testSingle() {
         String code = generateRandomCode();

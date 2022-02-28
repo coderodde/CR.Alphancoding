@@ -8,15 +8,15 @@ public final class DigitDecoder {
     private static final int NOT_USED = -1;
     
     public static int[] compute(String s) {
-        char[] chars = s.toCharArray();
-        int[] outputArray = new int[26];
-        int currentIndex = 0;
-        char char1 = 0;
-        char char2 = 0;
+        char[] chars           = s.toCharArray();
+        int[] outputArray      = new int[26];
+        int currentIndex       = 0;
+        char char1             = 0;
+        char char2             = 0;
         boolean lastCharIsHash = false;
-        boolean readingCount = false;
-        int outputArrayIndex = NOT_USED;
-        int count = NOT_USED;
+        boolean readingCount   = false;
+        int outputArrayIndex   = NOT_USED;
+        int count              = NOT_USED;
         
         while (currentIndex < chars.length) {
             char c = chars[currentIndex];
@@ -24,6 +24,11 @@ public final class DigitDecoder {
             switch (c) {
                 case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
                     if (lastCharIsHash) {
+                        if (currentIndex < 2) {
+                            throw new IllegalArgumentException(
+                                    "Premature '#'.");
+                        }
+                        
                         lastCharIsHash = false;
                         count = 1;
                         char1 = c;
@@ -42,17 +47,18 @@ public final class DigitDecoder {
                     } else if (char2 == 0) {
                         char2 = c;
                     } else {
-                        if (lastCharIsHash) {
-                            lastCharIsHash = false;
-                            outputArrayIndex = (char1 - '0') *
-                                               (char2 - '0') - 1;
-                        } else {
-                            // Here, we can safely count the 'char1':
-                            outputArrayIndex = char1 - '0' - 1;
-                            count = 1;
-                            char1 = char2;
-                            char2 = c;
-                        }
+                        throw new IllegalStateException("Ooops");
+//                        if (lastCharIsHash) {
+//                            lastCharIsHash = false;
+//                            outputArrayIndex = (char1 - '0') *
+//                                               (char2 - '0') - 1;
+//                        } else {
+//                            // Here, we can safely count the 'char1':
+//                            outputArrayIndex = char1 - '0' - 1;
+//                            count = 1;
+//                            char1 = char2;
+//                            char2 = c;
+//                        }
                     }
                 }
                 case '#' -> {
@@ -71,12 +77,11 @@ public final class DigitDecoder {
                 case '(' -> {
                     if (lastCharIsHash) {
                         lastCharIsHash = false;
-                        outputArrayIndex = (char1 - '0') * 10 +
-                                           (char2 - '0') - 1;
+                    } else if (char2 == 0) {
+                        outputArrayIndex = char1 - '0' - 1;
                     } else {
                         outputArray[char1 - '0' - 1]++;
-                        char1 = char2;
-                        char2 = 0;
+                        outputArrayIndex = char2 - '0' - 1;
                     }
                     
                     if (currentIndex == 0) {
@@ -88,17 +93,12 @@ public final class DigitDecoder {
                         throw new IllegalArgumentException("No closing ')'.");
                     }
                     
-                    if (!lastCharIsHash) {
-                        outputArrayIndex = (char2 - '0' - 1);
-                    }
-                    
                     readingCount = true;
                 }
                 case ')' -> {
                     if (char2 == 0) {
                         if (char1 == 0) {
-                            throw new IllegalArgumentException(
-                                    "No digits to count.");
+                            return outputArray;
                         } else {
                             outputArrayIndex = char1 - '0' - 1;
                         }
@@ -109,8 +109,8 @@ public final class DigitDecoder {
                                     "Should not get here.");
                         }
                         
-                        outputArrayIndex = (char1 - '0') * 10 +
-                                           (char2 - '0') - 1;
+//                        outputArrayIndex = (char1 - '0') * 10 +
+//                                           (char2 - '0') - 1;
                     }
                     
                     char1 = 0;
@@ -159,6 +159,8 @@ public final class DigitDecoder {
     
     public static void main(String[] args) {
         String c = "20#(7)12(10)45(3)6";
+//        c = "1(2)";
+//        c = "20#(10)12(2)";
         int[] val = DigitDecoder.compute(c);
         System.out.println(Arrays.toString(val));
         System.exit(0);
