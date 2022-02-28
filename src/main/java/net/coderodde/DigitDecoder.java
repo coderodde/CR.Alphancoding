@@ -157,15 +157,9 @@ public final class DigitDecoder {
     }
     
     public static void main(String[] args) {
-        String c = "20#(7)12(10)45(3)6";
-//        c = "1(2)";
-//        c = "20#(10)12(2)";
-        c = "17#(3)2126#(8)";
-        int[] val = DigitDecoder.compute(c);
-        System.out.println(Arrays.toString(val));
-//        System.exit(0);
-        
         Scanner scanner = new Scanner(System.in);
+        int[] decodedInts1 = null;
+        int[] decodedInts2 = null;
         
         while (true) {
             String code = scanner.nextLine();
@@ -175,26 +169,34 @@ public final class DigitDecoder {
                 return;
             }
             
+            boolean noCompare = false;
+            
             try {
-                int[] decodedInts1 = compute(code);
+                decodedInts1 = compute(code);
                 System.out.println("cr: " + Arrays.toString(decodedInts1));
             } catch (Throwable t) {
                 System.err.println(
                         "coderodde's implementation failed: " 
-                                + t.getMessage() 
-                                + ", caused by: " 
-                                + t.getCause());
+                                + t.getMessage() + ".");
+                
+                noCompare = true;
             }
             
             try {
-                int[] decodedInts2 = OPDigitDecoder.frequency(code);
+                decodedInts2 = OPDigitDecoder.frequency(code);
                 System.out.println("OP: " + Arrays.toString(decodedInts2));
             } catch (Throwable t) {
                 System.err.println(
                         "OP's implementation failed: " 
-                                + t.getMessage() 
-                                + ", caused by: " 
-                                + t.getCause());
+                                + t.getMessage() + ".");
+                
+                noCompare = true;
+            }
+            
+            if (!noCompare) {
+                System.out.println(
+                        "Algorithms agree: " 
+                                + Arrays.equals(decodedInts1, decodedInts2));
             }
         }
     }
