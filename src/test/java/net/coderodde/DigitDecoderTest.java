@@ -8,16 +8,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DigitDecoderTest {
     
     private static final int TEST_ITERATIONS = 100;
-    private static final int MAXIMUM_CHARS = 4;
-    private static final int MAXIMUM_COUNT = 9;
+    private static final int MAXIMUM_CHARS = 10;
+    private static final int MAXIMUM_COUNT = 9999;
     
     private final Random random = new Random(1L);
-    
-//    @Test
-//    public void shit() {
-//        String s = "20#(7)12(10)";
-//        DigitDecoder.compute(s);
-//    }
     
     @Test
     public void testAll() {
