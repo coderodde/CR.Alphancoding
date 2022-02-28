@@ -19,6 +19,7 @@ public class DigitDecoderTest {
 //        DigitDecoder.compute(s);
 //    }
     
+    @Test
     public void testAll() {
         for (int iteration = 0; iteration < TEST_ITERATIONS; ++iteration) {
             testSingle();

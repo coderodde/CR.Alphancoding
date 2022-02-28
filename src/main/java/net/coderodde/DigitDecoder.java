@@ -47,18 +47,17 @@ public final class DigitDecoder {
                     } else if (char2 == 0) {
                         char2 = c;
                     } else {
-                        throw new IllegalStateException("Ooops");
-//                        if (lastCharIsHash) {
-//                            lastCharIsHash = false;
-//                            outputArrayIndex = (char1 - '0') *
-//                                               (char2 - '0') - 1;
-//                        } else {
-//                            // Here, we can safely count the 'char1':
-//                            outputArrayIndex = char1 - '0' - 1;
-//                            count = 1;
-//                            char1 = char2;
-//                            char2 = c;
-//                        }
+                        if (lastCharIsHash) {
+                            lastCharIsHash = false;
+                            outputArrayIndex = (char1 - '0') *
+                                               (char2 - '0') - 1;
+                        } else {
+                            // Here, we can safely count the 'char1':
+                            outputArrayIndex = char1 - '0' - 1;
+                            count = 1;
+                            char1 = char2;
+                            char2 = c;
+                        }
                     }
                 }
                 case '#' -> {
@@ -161,9 +160,10 @@ public final class DigitDecoder {
         String c = "20#(7)12(10)45(3)6";
 //        c = "1(2)";
 //        c = "20#(10)12(2)";
+        c = "17#(3)2126#(8)";
         int[] val = DigitDecoder.compute(c);
         System.out.println(Arrays.toString(val));
-        System.exit(0);
+//        System.exit(0);
         
         Scanner scanner = new Scanner(System.in);
         
