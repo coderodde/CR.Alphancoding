@@ -22,10 +22,8 @@ public class DigitDecoderTest {
     
     private void testSingle() {
         String code = generateRandomCode();
-        System.out.println(code);
         int[] decodedActual = DigitDecoder.compute(code);
         int[] decodedExpected = OPDigitDecoder.frequency(code);
-        
         assertTrue(Arrays.equals(decodedActual, decodedExpected));
     }
     
