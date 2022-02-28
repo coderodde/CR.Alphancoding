@@ -46,18 +46,16 @@ public final class DigitDecoder {
                         char1 = c;
                     } else if (char2 == 0) {
                         char2 = c;
+                    } else if (lastCharIsHash) {
+                        lastCharIsHash = false;
+                        outputArrayIndex = (char1 - '0') *
+                                           (char2 - '0') - 1;
                     } else {
-                        if (lastCharIsHash) {
-                            lastCharIsHash = false;
-                            outputArrayIndex = (char1 - '0') *
-                                               (char2 - '0') - 1;
-                        } else {
-                            // Here, we can safely count the 'char1':
-                            outputArrayIndex = char1 - '0' - 1;
-                            count = 1;
-                            char1 = char2;
-                            char2 = c;
-                        }
+                        // Here, we can safely count the 'char1':
+                        outputArrayIndex = char1 - '0' - 1;
+                        count = 1;
+                        char1 = char2;
+                        char2 = c;
                     }
                 }
                 case '#' -> {
@@ -107,9 +105,6 @@ public final class DigitDecoder {
                             throw new IllegalArgumentException(
                                     "Should not get here.");
                         }
-                        
-//                        outputArrayIndex = (char1 - '0') * 10 +
-//                                           (char2 - '0') - 1;
                     }
                     
                     char1 = 0;
